@@ -3,7 +3,7 @@ function injectHTML(list) {
   const target = document.querySelector(".people_list");
   target.innerHTML = "";
   list.forEach((item) => {
-    const str = `<table>${item.sex}</table>`;
+    const str = `<table>${item}</table>`;
     target.innerHTML += str;
   });
 }
@@ -16,6 +16,7 @@ async function mainEvent() {
 
   let currentList = []; // this is "scoped" to the main event function
 
+
   loadDataButton.addEventListener("click", async (submitEvent) => {
     // async has to be declared on every function that needs to "await" something
 
@@ -26,6 +27,12 @@ async function mainEvent() {
 
     storedData = JSON.stringify(currentList);
     parsedData = JSON.parse(storedData);
+    
+
+    offenderSex = parsedData.items.map((x) => x.sex);
+    placeOB = parsedData.items.map((x) => x.place_of_birth);
+    national = parsedData.items.map((x) => x.nationality);
+
 
     console.log("PD", parsedData);
   });
@@ -33,8 +40,7 @@ async function mainEvent() {
   generateListButton.addEventListener("click", (event) => {
     console.log("generate list");
     data = parsedData.items;
-    console.log(data);
-    injectHTML(data);
+    injectHTML(national);
   });
 
   
