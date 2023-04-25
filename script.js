@@ -1,4 +1,5 @@
 
+ function initChart(arr) {
   const ctx = document.getElementById('myChart');
 
   const myChart = new Chart(ctx, {
@@ -7,7 +8,7 @@
       labels: ['Under 60in', 'Between 60 and 70in', 'Over 70in'],
       datasets: [{
         label: '# of Votes',
-        data: chartArr,
+        data: arr,
         borderWidth: 1
       }]
     },
@@ -19,6 +20,9 @@
       }
     }
   });
+  return myChart;
+ }
+ 
 
 function isNull(value) {
     return value > 0; 
@@ -38,7 +42,7 @@ function greaterSeven(v) {
 
 function injectHTML(list) {
   console.log("injected HTML");
-  const target = document.querySelector(".people_list");
+  const target = document.querySelector("#people_list");
   target.innerHTML = "";
   list.forEach((item) => {
     const str = `<table>${item}</table>`;
@@ -50,6 +54,7 @@ async function mainEvent() {
   const mainForm = document.querySelector(".main_form");
   const loadDataButton = document.querySelector("#data_load");
   const generateListButton = document.querySelector("#generate");
+  const chartLoadButton = document.querySelector("#chart_load");
 
   let currentList = []; // this is "scoped" to the main event function
 
@@ -69,17 +74,24 @@ async function mainEvent() {
     offenderSex = parsedData.items.map((x) => x.sex);
     placeOB = parsedData.items.map((x) => x.place_of_birth);
     national = parsedData.items.map((x) => x.nationality);
-    height = parsedData.items.map((x) => x.height_max);
-    newHeights = height.filter(isNull);
+    height = parsedData.items.map((x) => x.height_max).filter(isNull);
+  
 
-    five = newHeights.filter(greaterFive);
-    six = newHeights.filter(greaterSix);
-    seven = newHeights.filter(greaterSeven);
+    five = height.filter(greaterFive);
+    six = height.filter(greaterSix);
+    seven = height.filter(greaterSeven);
 
+    
+  });
+
+  chartLoadButton.addEventListener("click", (event) => {
     chartArr = [five.length, six.length, seven.length]
+
+    initChart(chartArr);
 
     console.log("PD", chartArr);
   });
+    
 
   generateListButton.addEventListener("click", (event) => {
     console.log("generate list");
@@ -87,8 +99,8 @@ async function mainEvent() {
     injectHTML(six);
   });
 
-  
 
+  
 }
 
 

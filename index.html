@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brooke's INST377 Project</title>
+    <link rel="stylesheet" href="script.css">
   </head>
   <body>
     <div class="wrapper">
@@ -20,17 +21,14 @@
         </div>
         <div class="right_section box">
           <h3>Data Visualization</h3>
-          <div class="box">
-            <dl class="people_list"></dl>
-          </div>
+            <button type="button" id="chart_load">Load Chart</button>
+            <canvas id="myChart" class="box"></canvas>
+            <dl class="box" id="people_list">
+              List of Heights
+            </dl>
         </div>
       </div>
     </div>
-    <div>
-        <h3>Bar Chart</hs>
-      <canvas id="myChart"></canvas>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
     "></script>
     
