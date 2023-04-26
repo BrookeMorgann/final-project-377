@@ -45,7 +45,9 @@ function injectHTML(list) {
   const target = document.querySelector("#people_list");
   target.innerHTML = "";
   list.forEach((item) => {
-    const str = `<table>${item}</table>`;
+    const str = `<table>
+                <tr><td>${item.height_max}:</td><td>${item.sex}</td></tr>
+                 </table>`;
     target.innerHTML += str;
   });
 }    
@@ -96,7 +98,7 @@ async function mainEvent() {
   generateListButton.addEventListener("click", (event) => {
     console.log("generate list");
     data = parsedData.items;
-    injectHTML(six);
+    injectHTML(data);
   });
 
 
