@@ -1,16 +1,16 @@
-
- function initChart(arr) {
+function initChart(lit) {
   const ctx = document.getElementById('myChart');
-
+  console.log("p", lit)
   const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Under 60in', 'Between 60 and 70in', 'Over 70in'],
+      labels: [1, 2, 3, 4],
       datasets: [{
         label: '# of Votes',
-        data: arr,
+        data: lit,
         borderWidth: 1
-      }]
+      }
+    ]
     },
     options: {
       scales: {
@@ -21,24 +21,11 @@
     }
   });
   return myChart;
- }
+};
  
-
 function isNull(value) {
     return value > 0; 
 };
-
-function greaterFive(val) {
-    return val < 60;
-}
-
-function greaterSix(va) {
-    return va < 70 && va > 59;
-}
-
-function greaterSeven(v) {
-    return v > 69;
-}
 
 function injectHTML(list) {
   console.log("injected HTML");
@@ -46,64 +33,92 @@ function injectHTML(list) {
   target.innerHTML = "";
   list.forEach((item) => {
     const str = `<table>
-                <tr><td>${item.height_max}:</td><td>${item.sex}</td></tr>
-                 </table>`;
+    <tr><td><b>${item.name}:</b></td><td>${item.nationality}</td></tr>
+    <tr><td>Flight Count: ${item.flights_count}</td>
+    <td>Landings Count: ${item.landings_count}</td></tr>
+     </table>`;
     target.innerHTML += str;
   });
-}    
+};
+
+function filterList(list, query) {
+  a = list.results
+  console.log(a)
+  return a.filter((item) => {
+    const lowerCaseName = item.nationality.toLowerCase();
+    const lowerCaseQuery = query.toLowerCase();
+    return lowerCaseName.includes(lowerCaseQuery);
+  });  
+  
+};
+
+let currentList = [];
+let flightList = [];
+let landList = [];
 
 async function mainEvent() {
   const mainForm = document.querySelector(".main_form");
   const loadDataButton = document.querySelector("#data_load");
   const generateListButton = document.querySelector("#generate");
-  const chartLoadButton = document.querySelector("#chart_load");
+  const chartLoadButton = document.querySelector("#flights_load");
+  const textField = document.querySelector('#astro');
 
-  let currentList = []; // this is "scoped" to the main event function
+   // this is "scoped" to the main event function
 
-
-  loadDataButton.addEventListener("click", async (submitEvent) => {
+loadDataButton.addEventListener("click", async (submitEvent) => {
     // async has to be declared on every function that needs to "await" something
 
-    console.log("load data");
+  console.log("load data");
 
-    let results = await fetch("https://api.fbi.gov/wanted/v1/list");
-    currentList = await results.json();
+  let results = await fetch("https://lldev.thespacedevs.com/2.2.0/astronaut/");
+  currentList = await results.json();
 
-    storedData = JSON.stringify(currentList);
-    parsedData = JSON.parse(storedData);
-    
-
-    offenderSex = parsedData.items.map((x) => x.sex);
-    placeOB = parsedData.items.map((x) => x.place_of_birth);
-    national = parsedData.items.map((x) => x.nationality);
-    height = parsedData.items.map((x) => x.height_max).filter(isNull);
+  storedData = JSON.stringify(currentList);
+  parsedData = JSON.parse(storedData);
   
 
-    five = height.filter(greaterFive);
-    six = height.filter(greaterSix);
-    seven = height.filter(greaterSeven);
+  console.log("PD", parsedData)
+
+  // parsedData.forEach((item) => {
+  //   flightList.push(item.flights_count)
+  //   landList.push(item.landings_count)
+  // });
+
+  // console.log(flightList);
+  // console.log(landList);
 
     
   });
 
   chartLoadButton.addEventListener("click", (event) => {
-    chartArr = [five.length, six.length, seven.length]
+    data = parsedData.results;
+    pee = []
+    data.forEach((item) => {
+      const st = item.flights_count
+      pee += st;
+    });
 
-    initChart(chartArr);
+    initChart(pee);
 
-    console.log("PD", chartArr);
+    console.log("PD", pee);
   });
     
+  textField.addEventListener('input', (event) => {
+      console.log('input', event.target.value);
+      const newList = filterList(currentList, event.target.value);
+      console.log(newList);
+      injectHTML(newList);
+  })
 
   generateListButton.addEventListener("click", (event) => {
     console.log("generate list");
-    data = parsedData.items;
+    data = parsedData.results;
     injectHTML(data);
   });
 
 
   
-}
+};
 
 
 document.addEventListener("DOMContentLoaded", async () => mainEvent());
