@@ -52,6 +52,23 @@ function filterList(list, query) {
   
 };
 
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+};
+
+function cutRestaurantList(list) {
+  console.log('fired cut list');
+  const range = [...Array(5).keys()];
+  return newArray = range.map((item) => {
+    const index = getRandomIntInclusive(0, list.length -1);
+    return list[index]
+  })
+};
+
+
+
 let currentList = [];
 let flightList = [];
 let landList = [];
@@ -62,31 +79,29 @@ async function mainEvent() {
   const generateListButton = document.querySelector("#generate");
   const chartLoadButton = document.querySelector("#flights_load");
   const textField = document.querySelector('#astro');
-
-   // this is "scoped" to the main event function
-
-loadDataButton.addEventListener("click", async (submitEvent) => {
-    // async has to be declared on every function that needs to "await" something
-
-  console.log("load data");
-
-  let results = await fetch("https://lldev.thespacedevs.com/2.2.0/astronaut/");
-  currentList = await results.json();
-
-  storedData = JSON.stringify(currentList);
-  parsedData = JSON.parse(storedData);
   
 
-  console.log("PD", parsedData)
 
-  // parsedData.forEach((item) => {
-  //   flightList.push(item.flights_count)
-  //   landList.push(item.landings_count)
-  // });
+  loadDataButton.addEventListener("click", async (submitEvent) => {
+    // async has to be declared on every function that needs to "await" something
 
-  // console.log(flightList);
-  // console.log(landList);
+    console.log("load data");
 
+    let result = await fetch("https://lldev.thespacedevs.com/2.2.0/astronaut/");
+    // currentList = await results.json();
+
+    const storedList = await result.json();
+    localStorage.setItem('storedData', JSON.stringify(storedList));
+    parsedData = storedList;
+
+
+
+    if (parsedData?.length > 0) {
+      generateListButton.classList.remove('hidden')
+    };
+    
+
+    console.log("PD", parsedData)
     
   });
 
@@ -95,27 +110,38 @@ loadDataButton.addEventListener("click", async (submitEvent) => {
     pee = []
     data.forEach((item) => {
       const st = item.flights_count
-      pee += st;
+      pee.push(st);
     });
 
-    initChart(pee);
+    
+    const counts = {};
 
-    console.log("PD", pee);
+    for (const num of pee) {
+      counts[num] = counts[num] ? counts[num] + 1 : 1;
+    }
+    count = [counts[1], counts[2], counts[3], counts[4]]
+    console.log('counts', counts);
+    console.log(counts[1], counts[2], counts[3], counts[4]);
+    initChart(count);
+
+    console.log("PD", count);
   });
     
   textField.addEventListener('input', (event) => {
       console.log('input', event.target.value);
-      const newList = filterList(currentList, event.target.value);
-      console.log(newList);
-      injectHTML(newList);
-  })
 
-  generateListButton.addEventListener("click", (event) => {
-    console.log("generate list");
-    data = parsedData.results;
-    injectHTML(data);
+      const newList = filterList(parsedData, event.target.value);
+      
+      console.log('text', newList);
+      injectHTML(newList);
   });
 
+  generateListButton.addEventListener("click", (event) => {
+    console.log("generate list", currentList);
+    data = parsedData.results;
+    currentList = cutRestaurantList(data)
+    injectHTML(currentList);
+  });
 
   
 };
