@@ -2,6 +2,7 @@
 
 ##### github pages: 
 https://brookemorgann.github.io/final-project-377/
+##### This is meant for all browsers
 
 ## What API did you use, link to the API
 #### I used the Space Devs Astronaut API:
