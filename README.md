@@ -15,7 +15,7 @@ https://lldev.thespacedevs.com/2.2.0/astronaut/
 #### Chart.js was used to create the bar graph on this website.
 
 ## What CSS frameworks did you use? What version of them?
-#### I used the Bootstrap version 3.5 framework.
+#### I used the Flexbox framework. I am using the latest version.
 
 ## What is your actual project trying to display and solve?
 #### The project is trying to understand what leads to the difference in flight counts per astronaut.
