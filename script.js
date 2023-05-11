@@ -50,59 +50,6 @@ function initChart(lit) {
   });
   return myChart;
 }
-function initLine() {
-  const ctx = document.getElementById("myLine");
-  console.log("p", lit);
-  const myLine = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: [1, 50, 100],
-      datasets: [
-        {
-          label: "Age",
-          data: [32, 45, 77],
-          borderWidth: 1,
-          backgroundColor: "rgb(104, 50, 87, 0.9)",
-        },
-      ],
-    },
-    options: {
-      scales: {
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Flight Count",
-            font: {
-              family: "Times",
-              size: 20,
-              weight: "bold",
-              lineHeight: 1.2,
-            },
-            padding: { top: 20, left: 0, right: 0, bottom: 0 },
-          },
-        },
-        y: {
-          beginAtZero: true,
-          display: true,
-          title: {
-            display: true,
-            text: "# of People",
-            font: {
-              family: "Times",
-              size: 20,
-              weight: "bold",
-              lineHeight: 1.2,
-            },
-            padding: { top: 30, left: 0, right: 0, bottom: 0 },
-          },
-        },
-      },
-    },
-  });
-  return myLine;
-}
-}
 
 function isNull(value) {
   return value > 0;
@@ -118,13 +65,15 @@ function injectHTML(list) {
                 <th>Nationality</th>
                 <th>Flights</th>
                 <th>Landings</th>
+                <th>Year of First Trip</th>
               </thead>`
   list.forEach((item) => {
     str += `<tr>
     <td scope="row"><b>${item.name}</b></td>
     <td>${item.nationality}</td>
     <td><b>${item.flights_count}</b></td>
-    <td>${item.landings_count}</td>
+    <td><b>${item.landings_count}</b></td>
+    <td><b>${item.first_flight}</b></th>
     </tr>`;
   });
   str += `</table>`;
@@ -138,6 +87,16 @@ function filterList(list, query) {
     const lowerCaseName = item.nationality.toLowerCase();
     const lowerCaseQuery = query.toLowerCase();
     return lowerCaseName.includes(lowerCaseQuery);
+  });
+}
+
+function filterFlights(list, query) {
+  a = list.results;
+  console.log('a', a);
+  return a.filter((item) => {
+    const number = item.flights_count;
+    console.log(item)
+    return number == query;
   });
 }
 
@@ -165,6 +124,7 @@ async function mainEvent() {
   const generateListButton = document.querySelector("#generate");
   const chartLoadButton = document.querySelector("#flights_load");
   const textField = document.querySelector("#astro");
+  const flightText = document.querySelector('#flights');
 
   //loadDataButton.addEventListener("click", async (submitEvent) => {
   // async has to be declared on every function that needs to "await" something
@@ -206,6 +166,7 @@ async function mainEvent() {
   console.log(counts[1], counts[2], counts[3], counts[4]);
   initChart(count);
 
+
   console.log("PD", count);
   //});
 
@@ -213,6 +174,15 @@ async function mainEvent() {
     console.log("input", event.target.value);
 
     const newList = filterList(parsedData, event.target.value);
+
+    console.log("text", newList);
+    injectHTML(newList);
+  });
+
+  flightText.addEventListener("input", (event) => {
+    console.log("input", event.target.value);
+
+    const newList = filterFlights(parsedData, event.target.value);
 
     console.log("text", newList);
     injectHTML(newList);
