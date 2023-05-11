@@ -90,14 +90,15 @@ function filterList(list, query) {
   });
 }
 
-function filterFlights(list, query) {
+function filterFlights(list, query=0) {
   a = list.results;
-  console.log('a', a);
+  console.log(a);
   return a.filter((item) => {
     const number = item.flights_count;
     console.log(item)
-    return number == query;
+    return number >= query;
   });
+  
 }
 
 function getRandomIntInclusive(min, max) {
@@ -120,22 +121,16 @@ let flightList = [];
 let landList = [];
 
 async function mainEvent() {
-  const mainForm = document.querySelector(".main_form");
   const generateListButton = document.querySelector("#generate");
-  const chartLoadButton = document.querySelector("#flights_load");
   const textField = document.querySelector("#astro");
   const flightText = document.querySelector('#flights');
-
-  //loadDataButton.addEventListener("click", async (submitEvent) => {
-  // async has to be declared on every function that needs to "await" something
 
   console.log("load data");
 
   let result = await fetch("https://lldev.thespacedevs.com/2.2.0/astronaut/");
   // let result = await fetch("https://ll.thespacedevs.com/2.2.0/astronaut/");
 
-  // currentList = await results.json();
-
+  //loading the data
   const storedList = await result.json();
   localStorage.setItem("storedData", JSON.stringify(storedList));
   parsedData = storedList;
@@ -146,19 +141,17 @@ async function mainEvent() {
 
   console.log("PD", parsedData);
 
-  //});
-
-  //chartLoadButton.addEventListener("click", (event) => {
+  //loading the flights count for each astronaut
   data = parsedData.results;
-  pee = [];
+  list = [];
   data.forEach((item) => {
     const st = item.flights_count;
-    pee.push(st);
+    list.push(st);
   });
 
+  //initialize the chart and count for occurrences of flight numbers
   const counts = {};
-
-  for (const num of pee) {
+  for (const num of list) {
     counts[num] = counts[num] ? counts[num] + 1 : 1;
   }
   count = [counts[1], counts[2], counts[3], counts[4]];
@@ -166,9 +159,12 @@ async function mainEvent() {
   console.log(counts[1], counts[2], counts[3], counts[4]);
   initChart(count);
 
-
+  //generate list
+  console.log("generate list", currentList);
+  data = parsedData.results;
+  currentList = data;
+  injectHTML(currentList);
   console.log("PD", count);
-  //});
 
   textField.addEventListener("input", (event) => {
     console.log("input", event.target.value);
@@ -188,12 +184,9 @@ async function mainEvent() {
     injectHTML(newList);
   });
 
-  //generateListButton.addEventListener("click", (event) => {
-  console.log("generate list", currentList);
-  data = parsedData.results;
-  currentList = data;
-  injectHTML(currentList);
-  //});
+ 
+ 
+ 
 }
 
 document.addEventListener("DOMContentLoaded", async () => mainEvent());

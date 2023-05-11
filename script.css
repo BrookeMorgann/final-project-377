@@ -138,19 +138,23 @@ th {
 }
 td:nth-child(3) {
   font-weight: bold;
-  width: 33.333333333%
+  width: 20%
+}
+td:nth-child(4) {
+  font-weight: bold;
+  width: 20%
 }
 td:nth-child(2) {
   font-weight: bold;
-  width: 33.333333333%
+  width: 20%
 }
 td:first-child {
   font-weight: bold;
-  width: 33.333333333%
+  width: 20%
 }
 td:last-child {
   font-weight: bold;
-  width: 33.333333333
+  width: 20%
 }
 
 .chart-size {
@@ -166,7 +170,13 @@ td:last-child {
   
 }
 
+.about {
+  text-align: center;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem;
 
+}
 
 .box {
   background-color: rgba(255, 255, 255, 0.7);
@@ -178,6 +188,15 @@ td:last-child {
   padding: 1.5rem;
   margin: 0 auto;
 }
+.middle {
+  background-color: #42213D;
+  margin: auto;
+  padding: 1.5rem;
+  text-align: center;
+  max-width: fit-content;
+  justify-content: center;
+  align-items: center;
+}  
 
 .left_section {
   background-color: #42213D;
@@ -191,7 +210,7 @@ td:last-child {
   flex: 1 2 auto;
   margin: 1rem;
   align-items: center;
-  max-width: 600px;
+  max-width: 550px;
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -260,5 +279,14 @@ td:last-child {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .chart-size {
+    height: fit-content;
+    padding: 25px;
+    width: 70vw;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 }

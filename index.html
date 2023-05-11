@@ -16,33 +16,34 @@
       <header class="header">
         <h1>Astronaut Data</h1>
       </header>
+      <div class="about"><a href="about.html" class="item"><button>About Page</button></a></div>
       <div class="container">
+        
         <div class="left_section box">
             
             <div class="submit_form">
                 <form
                 action="https://lldev.thespacedevs.com/2.2.0/astronaut/"
-              
-
                 class="box main_form">
                 
                 <div>
-                    <label for="astro"><b>Filter by Nationality</b></label>
+                    <label for="astro"><b>Filter by nationality</b></label>
                     <input type="text" id="astro" name="astro"/>
                 </div>
                 <div>
-                  <label for="flights"><b>Filter by Flights</b></label>
+                  <label for="flights"><b>Flight count greater than</b></label>
                   <input type="text" id="flights" name="flights"/>
               </div>
+              
                 </form>
+               
+            
             </div>
            
         </div>
         <div class="right_section box">
           <h4>Astronaut List</h4>
-          <div class="box table" id="people_list">
-            
-          </div>
+          <div class="table box" id="people_list"></div>
         </div>
       </div>
       <div class="container">
