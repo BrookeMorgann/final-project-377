@@ -280,13 +280,8 @@ td:last-child {
     justify-content: center;
     align-items: center;
   }
-  .chart-size {
-    height: fit-content;
-    padding: 25px;
-    width: 70vw;
-    margin: 0 auto;
-    align-items: center;
-    justify-content: center;
+  th, td {
     text-align: center;
+    padding: 5px;
   }
 }
